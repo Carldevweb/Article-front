@@ -1,0 +1,18 @@
+<div class="card h-100">
+  <img
+    *ngIf="imageUrl"
+    [src]="imageUrl"
+    class="card-img-top"
+    alt="Article image"
+  />
+
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title">{{ title }}</h5>
+    <p class="card-text text-muted small" *ngIf="author || date">
+      <span *ngIf="author">By {{ author }}</span>
+      <span *ngIf="author && date"> | </span>
+      <span *ngIf="date">{{ date }}</span>
+    </p>
+    <p class="card-text flex-grow-1">{{ content }}</p>
+  </div>
+</div>

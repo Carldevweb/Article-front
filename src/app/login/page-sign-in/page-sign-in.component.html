@@ -1,0 +1,13 @@
+<form [formGroup]="authForm" (ngSubmit)="send()">
+  <label>Email :</label>
+  <input type="email" formControlName="email" required />
+
+  <label>Mot de passe :</label>
+  <input type="password" formControlName="motDePasse" required />
+
+  <button class="btn btn-primary" type="submit">Se connecter</button>
+</form>
+
+@if (messageErreur) {
+<p>{{ messageErreur }}</p>
+}

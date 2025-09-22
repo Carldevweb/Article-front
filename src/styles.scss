@@ -1,1 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'bootstrap/scss/bootstrap';
+@use "stylings/variables" as *;
+@use "stylings/theme" as *;
+@use "stylings/fonts" as *;
+@use "stylings/layout" as *;

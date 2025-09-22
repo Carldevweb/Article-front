@@ -1,0 +1,19 @@
+<header class="fixed-top">
+  <ng-content select=".tr-header"></ng-content>
+</header>
+
+<nav>
+  <ng-content select=".tr-nav"></ng-content>
+</nav>
+<main>
+  <div class="shadow position-fixed"></div>
+
+  <div class="page">
+    <div class="contents">
+      <ng-content select=".tr-content"></ng-content>
+    </div>
+    <footer>
+      <ng-content select=".tr-footer"></ng-content>
+    </footer>
+  </div>
+</main>
