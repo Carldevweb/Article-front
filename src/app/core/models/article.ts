@@ -22,4 +22,8 @@ export class Article implements ArticleI {
       Object.assign(this, data);
     }
   }
+
+    get imageUrl(): string {
+    return this.media?.[0]?.url || 'https://via.placeholder.com/150';
+  }
 }

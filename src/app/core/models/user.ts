@@ -3,8 +3,8 @@ import { UserI } from '../interfaces/user-i';
 
 export class User implements UserI {
   id!: number;
-  userName!: string;
-  userLastName!: string;
+  nomUtilisateur!: string;
+  prenomUtilisateur!: string;
   password!: string;
   email!: string;
   token!: string;

@@ -1,16 +1,8 @@
-<div *ngIf="loading">Chargement des articles...</div>
+<div class="row">
+  <div class="col-md-4 mb-3" *ngFor="let article of articles">
+    <app-card-custom [article]="article" [imageUrl]="article.imageUrl" [footer]="article.author"
+      [routerLink]="['/articles', article.id]">
 
-<div *ngIf="errorMessage" class="error">
-  {{ errorMessage }}
-</div>
-
-<div *ngIf="!loading && !errorMessage">
-  <div *ngFor="let article of articles">
-    <app-card-custom
-      [title]="article.title"
-      [content]="article.content"
-      [imageUrl]="getImageUrl(article)"
-      [footer]="'Publié le ' + (article.creationDate | date)"
-    ></app-card-custom>
+    </app-card-custom>
   </div>
 </div>

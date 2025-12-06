@@ -8,7 +8,7 @@ import { FormCustomComponent } from './form-custom/form-custom.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardCustomComponent } from './card-custom/card-custom/card-custom.component';
 import { ArticleCustomComponent } from './article-custom/article-custom/article-custom.component';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,11 @@ import { RouterLink } from '@angular/router';
     CardCustomComponent,
     ArticleCustomComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule
+  ],
   exports: [
     TableLightComponent,
     BtnComponent,

@@ -65,9 +65,6 @@ export class LoginService {
     );
   }
 
-  /**
-   * Récupérer le profil de l'utilisateur authentifié
-   */
   getProfil(): Observable<User> {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -77,9 +74,6 @@ export class LoginService {
     return this.http.get<User>(`${this.apiUrl}/profil`, { headers });
   }
 
-  /**
-   * Déconnexion de l'utilisateur
-   */
   deconnexion(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('utilisateur');
@@ -87,9 +81,6 @@ export class LoginService {
     this.router.navigate(['/accueil']);
   }
 
-  /**
-   * Vérifie si l'utilisateur est authentifié (token présent et non expiré)
-   */
   estAuthentifie(): boolean {
     const userJson = localStorage.getItem('utilisateur');
     if (!userJson) {
@@ -107,9 +98,6 @@ export class LoginService {
     return true;
   }
 
-  /**
-   * Extrait la date d'expiration du JWT
-   */
   private getTokenExpirationDate(token: string): Date | null {
     const payload = this.decodeJwt(token);
     if (!payload || !payload.exp) {
@@ -135,12 +123,10 @@ export class LoginService {
     }
   }
 
-  /** Observable pour les composants qui souhaitent suivre l'état utilisateur */
   get utilisateur$(): Observable<User[]> {
     return this.users$.asObservable();
   }
 
-  /** Récupère l'utilisateur courant depuis le storage */
   getUtilisateur(): User | null {
     const stored = localStorage.getItem('utilisateur');
     return stored ? JSON.parse(stored) as User : null;

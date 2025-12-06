@@ -2,8 +2,8 @@ import { LikeI } from './like-i';
 
 export interface UserI {
   id: number;
-  userName: string;
-  userLastName: string;
+  nomUtilisateur: string;
+  prenomUtilisateur: string;
   password: string;
   email: string;
   token: string;

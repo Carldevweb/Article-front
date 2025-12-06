@@ -15,18 +15,17 @@ import { Article } from '../../core/models/article';
   providedIn: 'root',
 })
 export class ArticleService {
-  private collection$: BehaviorSubject<Article[]> = new BehaviorSubject<
-    Article[]
-  >([]);
+  private collection$ = new BehaviorSubject<Article[]>([]);
   private apiUrl = 'http://localhost:8080/articles';
 
   constructor(private http: HttpClient) {
     this.refreshCollection();
   }
 
+  /** Construction des headers avec JWT */
   private getHttpOptions() {
-    const token =
-      typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = localStorage.getItem('token');
+
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -35,16 +34,14 @@ export class ArticleService {
     };
   }
 
+  /** Rafraîchit la liste locale des articles */
   public refreshCollection(): void {
     this.http
       .get<Article[]>(this.apiUrl, this.getHttpOptions())
       .pipe(
-        map((articles) => articles.map((article) => new Article(article))),
+        map((articles) => articles.map((a) => new Article(a))),
         catchError((error) => {
-          console.error(
-            'Erreur lors du rafraîchissement des articles :',
-            error
-          );
+          console.error('Erreur lors du rafraîchissement des articles :', error);
           return throwError(
             () => new Error('Erreur lors de la récupération des articles')
           );
@@ -53,82 +50,94 @@ export class ArticleService {
       .subscribe((data) => this.collection$.next(data));
   }
 
+  /** Observable pour la collection */
   public get collection(): Observable<Article[]> {
     return this.collection$.asObservable();
   }
 
+  /** Récupère un article depuis l’API */
   getById(id: number): Observable<Article> {
-    const article = this.collection$.value.find((a) => a.id === id);
-    console.log("Recherche de l'article avec id:", id); // Ajout d'un log ici
-    if (article) {
-      return of(article);
-    } else {
-      return throwError(
-        () => new Error('Article non trouvé dans la collection')
-      );
-    }
-  }
-
-  getByTitle(titre: string): Observable<Article> {
-    return this.http.get<Article>(
-      `${this.apiUrl}/titre/${titre}`,
-      this.getHttpOptions()
-    );
-  }
-
-  createArticle(col: Article): Observable<any> {
-    return this.http.post<any>(this.apiUrl, col, this.getHttpOptions()).pipe(
-      tap(() => this.refreshCollection()),
-      catchError((error) => {
-        console.error("Erreur lors de la création de l'article :", error);
-        return throwError(
-          () => new Error("Erreur lors de la création de l'article")
-        );
-      })
-    );
-  }
-
-  updateArticle(col: Article): Observable<Article> {
-    if (!col.id) {
-      throw new Error("L'identifiant de l'article n'existe pas");
-    }
     return this.http
-      .put<Article>(`${this.apiUrl}/${col.id}`, col, this.getHttpOptions())
+      .get<Article>(`${this.apiUrl}/${id}`, this.getHttpOptions())
       .pipe(
-        tap((articleMisAJour) => {
-          console.log('Article mis à jour :', articleMisAJour);
-          const collectionMisAJour = this.collection$.value.map((article) =>
-            article.id === articleMisAJour.id
-              ? new Article(articleMisAJour)
-              : article
-          );
-          this.collection$.next(collectionMisAJour);
-        }),
+        map((a) => new Article(a)),
         catchError((error) => {
-          console.error("Erreur lors de la mise à jour de l'article :", error);
-          return throwError(
-            () => new Error("Erreur lors de la mise à jour de l'article")
-          );
+          console.error('Erreur lors de la récupération par ID :', error);
+          return throwError(() => new Error('Article introuvable'));
         })
       );
   }
 
-
-getAllArticles(): Observable<Article[]> {
-  return this.http.get<Article[]>(`${this.apiUrl}/articles`);
-}
-
-
-  public deleteArticle(col: Article): Observable<any> {
+  /** Recherche par titre */
+  getByTitle(titre: string): Observable<Article> {
     return this.http
-      .delete<any>(`${this.apiUrl}/${col.id}`, this.getHttpOptions())
+      .get<Article>(`${this.apiUrl}/titre/${titre}`, this.getHttpOptions())
+      .pipe(
+        map((a) => new Article(a)),
+        catchError((error) => {
+          console.error("Erreur lors de la récupération par titre :", error);
+          return throwError(() => new Error('Article non trouvé'));
+        })
+      );
+  }
+
+  /** Création */
+  createArticle(article: Article): Observable<Article> {
+    return this.http
+      .post<Article>(this.apiUrl, article, this.getHttpOptions())
+      .pipe(
+        tap(() => this.refreshCollection()),
+        map((a) => new Article(a)),
+        catchError((error) => {
+          console.error("Erreur lors de la création de l'article :", error);
+          return throwError(() => new Error("Erreur création article"));
+        })
+      );
+  }
+
+  /** Mise à jour */
+  updateArticle(article: Article): Observable<Article> {
+    if (!article.id) {
+      throw new Error("L'identifiant de l'article est manquant");
+    }
+
+    return this.http
+      .put<Article>(`${this.apiUrl}/${article.id}`, article, this.getHttpOptions())
+      .pipe(
+        tap((updated) => {
+          const updatedCollection = this.collection$.value.map((a) =>
+            a.id === updated.id ? new Article(updated) : a
+          );
+          this.collection$.next(updatedCollection);
+        }),
+        map((a) => new Article(a)),
+        catchError((error) => {
+          console.error("Erreur mise à jour de l'article :", error);
+          return throwError(() => new Error("Erreur mise à jour"));
+        })
+      );
+  }
+
+  /** Liste complète depuis l’API (sans affecter le BehaviorSubject) */
+  getAllArticles(): Observable<Article[]> {
+    return this.http.get<Article[]>(this.apiUrl, this.getHttpOptions()).pipe(
+      map((list) => list.map((a) => new Article(a))),
+      catchError((error) => {
+        console.error('Erreur getAllArticles :', error);
+        return throwError(() => new Error('Erreur lors de la récupération'));
+      })
+    );
+  }
+
+  /** Suppression */
+  deleteArticle(article: Article): Observable<any> {
+    return this.http
+      .delete(`${this.apiUrl}/${article.id}`, this.getHttpOptions())
       .pipe(
         tap(() => this.refreshCollection()),
         catchError((error) => {
-          console.error("Erreur lors de la suppression de l'article :", error);
-          return throwError(
-            () => new Error("Erreur lors de la suppression de l'article")
-          );
+          console.error("Erreur suppression :", error);
+          return throwError(() => new Error("Erreur suppression article"));
         })
       );
   }

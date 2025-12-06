@@ -3,16 +3,20 @@ import { Article } from '../../../core/models/article';
 
 @Component({
   selector: 'app-card-custom',
-  standalone: false,
   templateUrl: './card-custom.component.html',
-  styleUrl: './card-custom.component.scss',
+  styleUrls: ['./card-custom.component.scss'],
+  standalone: false,
 })
 export class CardCustomComponent {
+
   @Input() article: Article | null = null;
 
-  @Input() id!: number;
-  @Input() title: string = 'Card Title';
-  @Input() content: string = 'This is the card content.';
+  @Input() title?: string;
+  @Input() content?: string;
+
   @Input() imageUrl?: string;
   @Input() footer?: string;
+
+  @Input() routerLink?: any[] | string;
+  @Input() queryParams?: any;
 }

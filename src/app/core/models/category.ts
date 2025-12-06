@@ -3,7 +3,7 @@ import { CategoryI } from '../interfaces/category-i';
 
 export class Category implements CategoryI {
   id!: number;
-  categoryName!: string;
+  nomCategorie!: string;
   article!: ArticleI;
 
   constructor(data?: Partial<Category>) {
