@@ -5,7 +5,6 @@ import {
   catchError,
   map,
   Observable,
-  of,
   tap,
   throwError,
 } from 'rxjs';
@@ -22,29 +21,36 @@ export class ArticleService {
     this.refreshCollection();
   }
 
-  /** Construction des headers avec JWT */
-  private getHttpOptions() {
+  /** Headers avec JWT (uniquement pour endpoints protégés) */
+  private getHttpOptionsWithJwt() {
     const token = localStorage.getItem('token');
 
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       }),
     };
   }
 
-  /** Rafraîchit la liste locale des articles */
+  /** Headers simples (pour endpoints publics) */
+  private getHttpOptionsPublic() {
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+  }
+
+  /** Rafraîchit la liste locale des articles (GET public) */
   public refreshCollection(): void {
     this.http
-      .get<Article[]>(this.apiUrl, this.getHttpOptions())
+      .get<any[]>(this.apiUrl, this.getHttpOptionsPublic())
       .pipe(
         map((articles) => articles.map((a) => new Article(a))),
         catchError((error) => {
           console.error('Erreur lors du rafraîchissement des articles :', error);
-          return throwError(
-            () => new Error('Erreur lors de la récupération des articles')
-          );
+          return throwError(() => error); // ✅ garder le status HTTP
         })
       )
       .subscribe((data) => this.collection$.next(data));
@@ -55,89 +61,90 @@ export class ArticleService {
     return this.collection$.asObservable();
   }
 
-  /** Récupère un article depuis l’API */
+  /** Récupère un article par ID (GET public) */
   getById(id: number): Observable<Article> {
     return this.http
-      .get<Article>(`${this.apiUrl}/${id}`, this.getHttpOptions())
+      .get<any>(`${this.apiUrl}/${id}`, this.getHttpOptionsPublic())
       .pipe(
         map((a) => new Article(a)),
         catchError((error) => {
           console.error('Erreur lors de la récupération par ID :', error);
-          return throwError(() => new Error('Article introuvable'));
+          return throwError(() => error); // ✅
         })
       );
   }
 
-  /** Recherche par titre */
+  /** Recherche par titre (GET public) */
   getByTitle(titre: string): Observable<Article> {
     return this.http
-      .get<Article>(`${this.apiUrl}/titre/${titre}`, this.getHttpOptions())
+      .get<any>(`${this.apiUrl}/titre/${titre}`, this.getHttpOptionsPublic())
       .pipe(
         map((a) => new Article(a)),
         catchError((error) => {
-          console.error("Erreur lors de la récupération par titre :", error);
-          return throwError(() => new Error('Article non trouvé'));
+          console.error('Erreur lors de la récupération par titre :', error);
+          return throwError(() => error); // ✅
         })
       );
   }
 
-  /** Création */
-  createArticle(article: Article): Observable<Article> {
+  /** Création (protégé -> JWT) */
+  createArticle(payload: {
+    titre: string;
+    contenu: string;
+    auteur: string;
+  }): Observable<any> {
     return this.http
-      .post<Article>(this.apiUrl, article, this.getHttpOptions())
+      .post<any>(this.apiUrl, payload, this.getHttpOptionsWithJwt())
       .pipe(
         tap(() => this.refreshCollection()),
-        map((a) => new Article(a)),
         catchError((error) => {
           console.error("Erreur lors de la création de l'article :", error);
-          return throwError(() => new Error("Erreur création article"));
+          return throwError(() => error); // ✅ garder 401/403
         })
       );
   }
 
-  /** Mise à jour */
-  updateArticle(article: Article): Observable<Article> {
-    if (!article.id) {
-      throw new Error("L'identifiant de l'article est manquant");
-    }
-
+  /** Mise à jour (protégé -> JWT)
+   *  ⚠️ Ton backend attend (titre/contenu/auteur), mais ton modèle Article est (title/content/author).
+   *  On fera le mapping propre quand tu attaqueras l'edit.
+   */
+  updateArticle(payload: {
+    id: number;
+    titre: string;
+    contenu: string;
+    auteur: string;
+  }): Observable<any> {
     return this.http
-      .put<Article>(`${this.apiUrl}/${article.id}`, article, this.getHttpOptions())
+      .put<any>(`${this.apiUrl}/${payload.id}`, payload, this.getHttpOptionsWithJwt())
       .pipe(
-        tap((updated) => {
-          const updatedCollection = this.collection$.value.map((a) =>
-            a.id === updated.id ? new Article(updated) : a
-          );
-          this.collection$.next(updatedCollection);
-        }),
-        map((a) => new Article(a)),
+        tap(() => this.refreshCollection()),
         catchError((error) => {
           console.error("Erreur mise à jour de l'article :", error);
-          return throwError(() => new Error("Erreur mise à jour"));
+          return throwError(() => error); // ✅
         })
       );
   }
 
-  /** Liste complète depuis l’API (sans affecter le BehaviorSubject) */
+  /** Liste complète depuis l’API (GET public) */
   getAllArticles(): Observable<Article[]> {
-    return this.http.get<Article[]>(this.apiUrl, this.getHttpOptions()).pipe(
+    return this.http.get<any[]>(this.apiUrl, this.getHttpOptionsPublic()).pipe(
       map((list) => list.map((a) => new Article(a))),
       catchError((error) => {
         console.error('Erreur getAllArticles :', error);
-        return throwError(() => new Error('Erreur lors de la récupération'));
+        return throwError(() => error); // ✅
       })
     );
   }
 
-  /** Suppression */
-  deleteArticle(article: Article): Observable<any> {
+  /** Suppression (protégé -> JWT) */
+  deleteArticle(id: number): Observable<any> {
     return this.http
-      .delete(`${this.apiUrl}/${article.id}`, this.getHttpOptions())
+      .delete(`${this.apiUrl}/${id}`, this.getHttpOptionsWithJwt())
       .pipe(
         tap(() => this.refreshCollection()),
         catchError((error) => {
-          console.error("Erreur suppression :", error);
-          return throwError(() => new Error("Erreur suppression article"));
+          console.error('Erreur suppression :', error);
+          return throwError(() => error); // ✅
         })
       );
   }

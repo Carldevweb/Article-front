@@ -1,3 +1,7 @@
+<h1>Créer un article</h1>
+
+<p *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</p>
+
 <app-form-custom
   [fields]="formFields"
   (formSubmit)="onFormSubmit($event)"
