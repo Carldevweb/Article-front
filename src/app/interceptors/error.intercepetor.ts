@@ -6,23 +6,26 @@ import {
   HttpEvent,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
-
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log('Erreur interceptée', error);
-        if (error.status === 401) {
-          this.router.navigate(['/login']);
-        }
+        // Log minimal (à garder ou enlever)
+        console.error('Erreur HTTP', {
+          url: req.url,
+          status: error.status,
+          message: error.message,
+          error: error.error,
+        });
+
+        // ⚠️ Ne PAS gérer le 401 ici : AuthInterceptor s'en charge (refresh + retry)
         return throwError(() => error);
       })
     );

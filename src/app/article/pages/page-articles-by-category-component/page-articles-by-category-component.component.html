@@ -1,0 +1,19 @@
+<h2>Articles de la catégorie</h2>
+
+<p *ngIf="loading">Chargement...</p>
+<p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
+
+<div class="row" *ngIf="!loading && !errorMessage">
+  <div class="col-md-4 mb-3" *ngFor="let article of articles">
+    <app-card-custom
+      [article]="article"
+      [imageUrl]="article.imageUrl"
+      [footer]="article.author"
+      [routerLink]="['/articles', article.id]">
+    </app-card-custom>
+  </div>
+</div>
+
+<p *ngIf="!loading && !errorMessage && articles.length === 0" class="text-muted">
+  Aucun article pour cette catégorie.
+</p>

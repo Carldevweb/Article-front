@@ -1,1 +1,41 @@
-<p>page-update-media works!</p>
+<button
+  type="button"
+  class="btn btn-outline-primary"
+  [disabled]="uploading || loadingArticle"
+  (click)="fileInput.click()"
+>
+  Importer depuis mon PC
+</button>
+
+<input
+  #fileInput
+  type="file"
+  accept="image/*"
+  style="display:none"
+  (change)="onFileSelected($event)"
+/>
+
+<div class="mt-2" *ngIf="loadingArticle">Chargement de l’article…</div>
+
+<div class="mt-2 text-danger" *ngIf="errorMessage">
+  {{ errorMessage }}
+  <button type="button" class="btn btn-link p-0 ms-2" (click)="loadArticle()">
+    Recharger
+  </button>
+</div>
+
+<div class="mt-2" *ngIf="uploading">Upload en cours…</div>
+<div class="mt-2 text-danger" *ngIf="uploadError">{{ uploadError }}</div>
+
+<img
+  *ngIf="imagePreviewUrl"
+  [src]="imagePreviewUrl"
+  alt="aperçu"
+  style="max-width: 240px; max-height: 240px; border: 1px solid #ccc; padding: 6px; display:block; margin-top:10px;"
+/>
+
+<!-- Debug -->
+<small class="d-block mt-2" *ngIf="mainImageUrl">
+  Image actuelle : {{ mainImageUrl }}
+</small>
+ 

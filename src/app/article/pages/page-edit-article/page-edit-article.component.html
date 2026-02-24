@@ -1,1 +1,103 @@
-<p>page-edit-article works!</p>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <h3 class="mb-1">Modifier un article</h3>
+    </div>
+
+    <button class="btn btn-outline-secondary" type="button" (click)="onBack()" [disabled]="saving">
+      Retour
+    </button>
+  </div>
+
+  <div *ngIf="erreur" class="alert alert-danger mb-3">{{ erreur }}</div>
+  <div *ngIf="successMessage" class="alert alert-success mb-3">{{ successMessage }}</div>
+
+  <div *ngIf="loading && !article" class="py-5 text-center">
+    <span class="spinner-border" role="status" aria-hidden="true"></span>
+  </div>
+
+  <div *ngIf="article" class="row g-4">
+    <!-- LEFT: Preview -->
+    <div class="col-12 col-lg-5">
+      <div class="panel">
+        <div class="panel__title mb-3">Aperçu</div>
+
+        <div class="ratio ratio-16x9 preview">
+          <img [src]="getPreviewSrc()" alt="Aperçu image article" (error)="onImgError($event)" />
+        </div>
+
+        <div class="mt-3 d-flex gap-2">
+          <label
+            class="btn btn-outline-custom w-100 mb-0"
+            [class.disabled]="saving"
+            (click)="saving ? $event.preventDefault() : null"
+          >
+            Choisir un fichier
+            <input
+              type="file"
+              accept="image/*"
+              class="d-none"
+              (change)="onFileSelected($event)"
+            />
+          </label>
+
+          <button
+            class="btn btn-outline-custom w-100"
+            type="button"
+            (click)="removeSelectedFile()"
+            [disabled]="saving || !selectedFile"
+          >
+            Retirer
+          </button>
+        </div>
+
+        <div class="text-muted mt-2" style="font-size: .9rem;">
+          Recadrage automatique en 16:9. Max 5MB.
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="col-12 col-lg-7">
+      <div class="panel">
+        <div class="panel__title mb-3">Informations</div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Titre</label>
+            <input class="form-control input" type="text" formControlName="titre" placeholder="Titre..." />
+            <div class="text-danger mt-1" *ngIf="form.get('titre')?.touched && form.get('titre')?.invalid">
+              Titre requis (min 3 caractères).
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Auteur</label>
+            <input class="form-control input" type="text" formControlName="auteur" placeholder="Auteur..." />
+            <div class="text-danger mt-1" *ngIf="form.get('auteur')?.touched && form.get('auteur')?.invalid">
+              Auteur requis.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Contenu</label>
+            <textarea
+              class="form-control input"
+              rows="8"
+              formControlName="contenu"
+              placeholder="Contenu..."
+            ></textarea>
+            <div class="text-danger mt-1" *ngIf="form.get('contenu')?.touched && form.get('contenu')?.invalid">
+              Contenu requis (min 10 caractères).
+            </div>
+          </div>
+
+          <button class="btn btn-primary-custom w-100" type="submit" [disabled]="saving">
+            <span *ngIf="saving" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+            Enregistrer
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

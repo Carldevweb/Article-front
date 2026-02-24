@@ -1,0 +1,121 @@
+:host {
+  --cat-black: #000000;
+  --cat-text: #161616;
+  --cat-white: #ffffff;
+  --cat-primary: #02a28f;
+  --cat-border: #d9d9d9;
+
+  --cat-radius: 10px;
+  --cat-padding: 24px;
+
+  --img-h: 160px;
+  --action-btn-min-w: 120px;
+}
+
+.cat-card {
+  background-color: var(--cat-white);
+  border-radius: var(--cat-radius);
+  padding: var(--cat-padding);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  position: relative;
+}
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.cat-card__image {
+  border-radius: var(--cat-radius);
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.cat-card__image img {
+  width: 100%;
+  height: var(--img-h);
+  object-fit: cover;
+  display: block;
+}
+
+.cat-card__title {
+  color: var(--cat-text);
+  font-weight: 700;
+  margin: 0;
+}
+
+.cat-card__text {
+  color: #6b6b6b;
+  margin: 8px 0 0 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* comme tes catégories */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Actions */
+.category-actions {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.category-actions .btn {
+  min-width: var(--action-btn-min-w);
+}
+
+/* Boutons */
+.cat-btn-primary {
+  background-color: var(--cat-primary);
+  color: var(--cat-white);
+  border-radius: var(--cat-radius);
+  border: none;
+}
+
+.cat-btn-primary:hover {
+  filter: brightness(0.95);
+  color: var(--cat-white);
+}
+
+.cat-btn-outline {
+  border: 1px solid var(--cat-primary);
+  color: var(--cat-primary);
+  border-radius: var(--cat-radius);
+  background: transparent;
+}
+
+.cat-btn-outline:hover {
+  background: rgba(2, 162, 143, 0.08);
+}
+
+.cat-btn-danger {
+  background: #dc3545;
+  color: #fff;
+  border-radius: var(--cat-radius);
+  border: none;
+}
+
+.cat-btn-danger:hover {
+  filter: brightness(0.9);
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+  .category-actions {
+    flex-direction: column;
+  }
+
+  .category-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cat-card__image img {
+    height: 180px;
+  }
+}

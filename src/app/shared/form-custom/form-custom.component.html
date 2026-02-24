@@ -1,21 +1,19 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div *ngFor="let field of fields" class="mb-3">
-    <label [for]="field.name" class="form-label">{{ field.label }}</label>
-    <input
-      *ngIf="field.type !== 'textarea'"
-      [type]="field.type"
-      class="form-control"
-      [id]="field.name"
-      [formControlName]="field.name"
-      [placeholder]="field.placeholder || ''"
-    />
-    <textarea
-      *ngIf="field.type === 'textarea'"
-      class="form-control"
-      [id]="field.name"
-      [formControlName]="field.name"
-      [placeholder]="field.placeholder || ''"
-    ></textarea>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="ui-form">
+  <div *ngFor="let field of fields" class="ui-field">
+    <label [for]="field.name" class="ui-label">{{ field.label }}</label>
+
+    <input *ngIf="field.type !== 'textarea'" [type]="field.type" class="ui-input"
+      [class.ui-input-invalid]="isInvalid(field.name)" [id]="field.name" [formControlName]="field.name"
+      [placeholder]="field.placeholder || ''" />
+
+    <textarea *ngIf="field.type === 'textarea'" class="ui-textarea" [class.ui-input-invalid]="isInvalid(field.name)"
+      [id]="field.name" [formControlName]="field.name" [placeholder]="field.placeholder || ''" rows="8"></textarea>
+
+    <div *ngIf="isInvalid(field.name)" class="ui-error">
+      Champ obligatoire.
+    </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+
+  <!-- ✅ Footer projeté (ex: bouton Publier dans la page) -->
+  <ng-content select="[form-footer]"></ng-content>
 </form>

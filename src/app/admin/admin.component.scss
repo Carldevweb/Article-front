@@ -1,0 +1,228 @@
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.page-wrap {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  color: #000;
+}
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  color: #000;
+}
+
+.ui-muted {
+  color: #616161;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* =========================
+   CREATE CATEGORY ROW
+========================= */
+
+.admin-create-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.admin-create-field {
+  flex: 1 1 360px;
+  min-width: 260px;
+}
+
+/* =========================
+   UI INPUT
+========================= */
+
+.ui-input {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+}
+
+.ui-input:focus {
+  border-color: #02a28f;
+  box-shadow: 0 0 0 3px rgba(2, 162, 143, 0.15);
+}
+
+/* =========================
+   UI BUTTON PRIMARY
+========================= */
+
+.ui-btn {
+  background: #02a28f;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.ui-btn:hover {
+  filter: brightness(0.95);
+}
+
+.ui-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   BUTTON OUTLINE
+========================= */
+
+.ui-btn-outline {
+  background: transparent;
+  border: 1px solid #d9d9d9;
+  color: #000;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ui-btn-outline:hover {
+  border-color: #02a28f;
+  color: #02a28f;
+}
+
+/* =========================
+   DANGER BUTTON
+========================= */
+
+.ui-btn-danger {
+  background: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.ui-btn-danger:hover {
+  filter: brightness(0.9);
+}
+
+/* =========================
+   SELECT
+========================= */
+
+.ui-select {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+  background: #fff;
+  outline: none;
+}
+
+.ui-select:focus {
+  border-color: #02a28f;
+  box-shadow: 0 0 0 3px rgba(2, 162, 143, 0.15);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-responsive {
+  margin-top: 16px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.table thead th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 800;
+  color: #616161;
+  border-bottom: 1px solid #d9d9d9;
+  padding: 12px 8px;
+}
+
+.table tbody td {
+  padding: 14px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 600;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pagination-info {
+  font-weight: 600;
+  color: #616161;
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.ui-alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.ui-alert-success {
+  background: rgba(2, 162, 143, 0.1);
+  border: 1px solid rgba(2, 162, 143, 0.25);
+  color: #027a6b;
+}
+
+.ui-alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  color: #b02a37;
+}

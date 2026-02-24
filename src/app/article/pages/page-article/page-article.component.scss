@@ -1,0 +1,15 @@
+.article-image {
+  width: 100%;
+  max-width: 500px;       /* taille du cadre */
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.article-image img {
+  object-fit: cover;
+  object-position: center top;   /* ou center center */
+  transform: scale(1.2);
+}
+

@@ -1,13 +1,76 @@
-<form [formGroup]="authForm" (ngSubmit)="send()">
-  <label>Email :</label>
-  <input type="email" formControlName="email" required />
+<div class="page-wrap">
+  <h1 class="page-title">Connexion</h1>
 
-  <label>Mot de passe :</label>
-  <input type="password" formControlName="motDePasse" required />
+  <app-card-container>
+    <p class="ui-muted">Connecte-toi pour accéder à ton espace.</p>
 
-  <button class="btn btn-primary" type="submit">Se connecter</button>
-</form>
+    @if (messageSucces) {
+      <div class="ui-alert ui-alert-success">
+        {{ messageSucces }}
+      </div>
+    }
 
-@if (messageErreur) {
-<p>{{ messageErreur }}</p>
-}
+    @if (messageErreur) {
+      <div class="ui-alert ui-alert-danger">
+        {{ messageErreur }}
+      </div>
+    }
+
+    <form class="ui-form" [formGroup]="authForm" (ngSubmit)="send()">
+      <div class="ui-field">
+        <label class="ui-label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('email')"
+          formControlName="email"
+          placeholder="ex: nom@email.com"
+          autocomplete="email"
+        />
+        @if (isInvalid('email')) {
+          <div class="ui-error">Email obligatoire.</div>
+        }
+      </div>
+
+      <div class="ui-field">
+        <label class="ui-label" for="motDePasse">Mot de passe</label>
+        <input
+          id="motDePasse"
+          type="password"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('motDePasse')"
+          formControlName="motDePasse"
+          placeholder="Ton mot de passe"
+          autocomplete="current-password"
+        />
+        @if (isInvalid('motDePasse')) {
+          <div class="ui-error">Mot de passe obligatoire (6 caractères min).</div>
+        }
+      </div>
+
+      <div class="login-actions">
+        <button
+          class="ui-btn"
+          type="submit"
+          [disabled]="loading || authForm.invalid"
+        >
+          {{ loading ? 'Connexion…' : 'Se connecter' }}
+        </button>
+
+        <a
+          class="ui-btn-outline"
+          routerLink="/login/sign-up"
+          [class.is-disabled]="loading"
+          (click)="loading ? $event.preventDefault() : null"
+        >
+          Créer un compte
+        </a>
+      </div>
+
+      <div class="login-links">
+        <a class="ui-link" routerLink="/login/forgot">Mot de passe oublié ?</a>
+      </div>
+    </form>
+  </app-card-container>
+</div>

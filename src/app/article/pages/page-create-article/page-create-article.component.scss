@@ -1,0 +1,146 @@
+:host {
+  display: block;
+}
+
+/* Tokens Figma (tu peux aussi les mettre dans styles.scss global) */
+.page-wrap {
+  --c-black: #000000;
+  --c-white: #ffffff;
+  --c-gray-600: #616161;
+  --c-gray-200: #d9d9d9;
+  --c-accent: #02a28f;
+
+  --r-card: 10px;
+  --s-24: 24px;
+  --shadow-card: 0 10px 24px rgba(0, 0, 0, 0.08);
+
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--s-24);
+}
+
+.page-title {
+  font-size: 44px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: var(--c-black);
+}
+
+.ui-card {
+  background: var(--c-white);
+  border: 1px solid var(--c-gray-200);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--s-24);
+}
+
+.section + .section {
+  margin-top: 24px;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-gray-600);
+  margin-bottom: 12px;
+}
+
+.ui-muted {
+  color: var(--c-gray-600);
+  font-size: 14px;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid var(--c-gray-200);
+  border-radius: 10px;
+  padding: 10px 12px;
+
+  background: var(--c-white);
+  cursor: pointer;
+  user-select: none;
+}
+
+.category-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--c-accent);
+}
+
+.category-name {
+  color: var(--c-black);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ui-btn {
+  background: var(--c-accent);
+  color: var(--c-white);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 800;
+  min-width: 160px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.ui-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--c-gray-200);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--c-black);
+
+  &:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+}
+
+.ui-alert {
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.ui-alert-danger {
+  background: rgba(220, 53, 69, 0.08);
+  border: 1px solid rgba(220, 53, 69, 0.25);
+  color: #b02a37;
+}
+
+.ui-alert-warning {
+  background: rgba(255, 193, 7, 0.15);
+  border: 1px solid rgba(255, 193, 7, 0.35);
+  color: #664d03;
+}
+
+@media (max-width: 576px) {
+  .page-title {
+    font-size: 34px;
+  }
+}

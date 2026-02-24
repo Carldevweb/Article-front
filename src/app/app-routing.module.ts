@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { PublicGuard } from './guards/public.guard';
+import { AdminComponent } from './admin/admin.component';
+import { AdminGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/articles', pathMatch: 'full' },
@@ -24,9 +27,30 @@ const routes: Routes = [
 
   {
     path: 'login',
+    canActivate: [PublicGuard],
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginModule),
   },
+
+ {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AdminGuard],
+  },
+
+  {
+    path: 'profil',
+    loadChildren: () =>
+      import('./profil/profil.module').then((m) => m.ProfilModule),
+  },
+
+
+  {
+    path: 'reset-password',
+    loadChildren: () =>
+      import('./reset-password/reset-password.module').then((m) => m.ResetPasswordModule),
+  },
+
   {
     path: 'not-found',
     loadChildren: () =>
@@ -43,4 +67,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

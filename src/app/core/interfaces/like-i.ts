@@ -1,8 +1,8 @@
-import { UserI } from "./user-i";
+import { UserI } from './user-i';
 
 export interface LikeI {
   id: number;
   creationDate: string;
-
-  user:UserI;
+  user: UserI;
+  articleId: number;
 }

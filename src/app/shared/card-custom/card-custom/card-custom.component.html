@@ -1,25 +1,48 @@
-<a
-  class="text-decoration-none text-dark"
-  [routerLink]="routerLink"
-  [queryParams]="queryParams"
->
-  <div class="card h-100 shadow-sm custom-card">
-    <img
-      *ngIf="imageUrl"
-      [src]="imageUrl"
-      class="card-img-top"
-      alt="Image"
-    />
+<!-- src/app/shared/components/card-custom/card-custom.component.html -->
+<a class="card-link d-block text-decoration-none" [routerLink]="routerLink" [queryParams]="queryParams">
+  <div class="cat-card position-relative d-flex flex-column">
 
-    <div class="card-body">
-      <h5 class="card-title">{{ article?.title || title }}</h5>
-      <p class="card-text">
-        {{ article?.content || content }}
-      </p>
+    <!-- Like -->
+    <button type="button" class="like-badge" (click)="onLikeClick($event)" aria-label="Toggle like">
+      <span [class.liked]="liked">♥</span>
+    </button>
+
+    <!-- Image -->  
+    <div class="cat-card__image mb-3">
+      <img *ngIf="imageUrl; else noImg" [src]="imageUrl" alt="Image" loading="lazy" (error)="onImgError($event)" />
+      <ng-template #noImg>
+        <div class="no-img">Aucune image</div>
+      </ng-template>
     </div>
 
-    <div *ngIf="footer" class="card-footer text-muted">
+    <!-- Titre -->
+    <h5 class="cat-card__title mb-2">
+      {{ article?.title || title }}
+    </h5>
+
+    <!-- Texte -->
+    <p class="cat-card__text flex-grow-1">
+      {{ article?.content || content }}
+    </p>
+
+    <!-- Footer -->
+    <div *ngIf="footer" class="cat-card__footer mt-3">
       {{ footer }}
     </div>
+
+  </div>
+
+  <div class="article-actions d-flex gap-2 mt-3 justify-content-end"
+    *ngIf="(article?.id != null) && (canEdit || canDelete)">
+    <!-- EDIT : EMPLOYEE + ADMIN -->
+    <a class="btn cat-btn-outline" [routerLink]="['/articles', article?.id, 'edit']" *ngIf="canEdit"
+      (click)="$event.preventDefault(); $event.stopPropagation()">
+      Modifier
+    </a>
+
+    <!-- DELETE : ADMIN -->
+    <button type="button" class="btn cat-btn-danger" *ngIf="canDelete" (click)="onDeleteClick($event)">
+      Supprimer
+    </button>
   </div>
 </a>

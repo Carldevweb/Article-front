@@ -1,0 +1,159 @@
+:host {
+  --cat-text: #161616;
+  --cat-white: #ffffff;
+  --cat-primary: #02a28f;
+  --cat-border: #d9d9d9;
+
+  --cat-radius: 10px;
+  --cat-padding: 24px;
+
+  --card-w: 360px;
+  --card-h: 396px;
+  --img-h: 160px;
+}
+
+.card-link {
+  color: inherit;
+}
+
+.article-actions .btn {
+  min-width: 120px;
+}
+
+/* Card Figma */
+.cat-card {
+  width: var(--card-w);
+  height: var(--card-h);
+
+  background: var(--cat-white);
+  border-radius: var(--cat-radius);
+  padding: var(--cat-padding);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  flex-direction: column;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* image */
+.cat-card__image {
+  border-radius: var(--cat-radius);
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.cat-card__image img {
+  width: 100%;
+  height: var(--img-h);
+  object-fit: cover;
+  display: block;
+}
+
+.no-img {
+  height: var(--img-h);
+  display: grid;
+  place-items: center;
+  color: #6b6b6b;
+  font-size: 0.9rem;
+}
+
+/* texte */
+.cat-card__title {
+  color: var(--cat-text);
+  font-weight: 700;
+  margin: 0;
+}
+
+.cat-card__text {
+  color: #6b6b6b;
+  margin: 8px 0 0 0;
+
+  flex: 1;
+  min-height: 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cat-card__footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 12px;
+  color: #6b6b6b;
+  font-size: 0.95rem;
+}
+
+/* boutons */
+.cat-btn-outline {
+  border: 1px solid var(--cat-primary);
+  color: var(--cat-primary);
+  border-radius: var(--cat-radius);
+  background: transparent;
+}
+
+.cat-btn-outline:hover {
+  background: rgba(2, 162, 143, 0.08);
+}
+
+.cat-btn-danger {
+  background: #dc3545;
+  color: #fff;
+  border-radius: var(--cat-radius);
+  border: none;
+}
+
+.cat-btn-danger:hover {
+  filter: brightness(0.9);
+}
+
+/* like */
+.like-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.like-badge span {
+  font-size: 18px;
+  line-height: 1;
+  color: #bdbdbd;
+}
+
+.like-badge span.liked {
+  color: #b57edc;
+}
+
+/* mobile */
+@media (max-width: 420px) {
+  .cat-card {
+    width: 100%;
+    height: auto;
+  }
+
+  .cat-card__image img,
+  .no-img {
+    height: 180px;
+  }
+}

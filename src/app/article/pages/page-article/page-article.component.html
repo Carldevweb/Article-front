@@ -1,14 +1,31 @@
-<app-article-custom>
-  <div class="container mt-4" *ngIf="article">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">{{ article.title }}</h3>
-        <p class="card-text">{{ article.content }}</p>
+<!-- src/app/pages/page-article/page-article.component.html -->
+<div class="container py-4" *ngIf="!loading && article">
+  <div class="row g-4">
+    <div class="col-12">
+
+      <div class="card shadow-sm">
+
+        <!-- IMAGE -->
+        <div class="article-image mx-auto mb-4">
+          <img
+            [src]="article.media?.[0]?.url || article.imageUrl || 'https://via.placeholder.com/1200x675?text=Aucune+image'"
+            alt="Image de l’article"
+            loading="lazy"
+            (error)="onImgError($event)"
+          />
+        </div>
+
+        <div class="card-body">
+          <h1 class="h3 mb-3">{{ article.title }}</h1>
+          <p class="mb-0 lh-lg">{{ article.content }}</p>
+        </div>
+
       </div>
+
     </div>
   </div>
+</div>
 
-  <div *ngIf="!article" class="text-center mt-5">
-    <p>Chargement en cours ou article introuvable...</p>
-  </div>
-</app-article-custom>
+<div class="container py-4" *ngIf="loading">
+  <div class="alert alert-info mb-0">Chargement...</div>
+</div>

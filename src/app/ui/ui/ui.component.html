@@ -1,19 +1,20 @@
-<header class="fixed-top">
-  <ng-content select=".tr-header"></ng-content>
-</header>
+<!-- src/app/ui/ui/ui.component.html -->
 
-<nav>
-  <ng-content select=".tr-nav"></ng-content>
-</nav>
-<main>
-  <div class="shadow position-fixed"></div>
+<div class="app-shell">
 
-  <div class="page">
-    <div class="contents">
-      <ng-content select=".tr-content"></ng-content>
-    </div>
-    <footer>
-      <ng-content select=".tr-footer"></ng-content>
-    </footer>
-  </div>
-</main>
+  <!-- NAV -->
+  <nav class="tr-nav-wrapper">
+    <ng-content select=".tr-nav"></ng-content>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="app-content">
+    <ng-content select=".tr-content"></ng-content>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="tr-footer-wrapper">
+    <ng-content select=".tr-footer"></ng-content>
+  </footer>
+
+</div>

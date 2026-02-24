@@ -1,0 +1,8 @@
+<div class="ui-card">
+  <div class="section-header" *ngIf="title || subtitle">
+    <h2 class="section-title" *ngIf="title">{{ title }}</h2>
+    <p class="ui-muted" *ngIf="subtitle">{{ subtitle }}</p>
+  </div>
+
+  <ng-content></ng-content>
+</div>

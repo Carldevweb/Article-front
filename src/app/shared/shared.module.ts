@@ -9,6 +9,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CardCustomComponent } from './card-custom/card-custom/card-custom.component';
 import { ArticleCustomComponent } from './article-custom/article-custom/article-custom.component';
 import { RouterModule } from '@angular/router';
+import { SharedDirectivesModule } from './shared-directives.module';
+import { CardContainerComponent } from './card-container/card-container.component';
+import { HasRoleDirective } from './directives/has-role.directive';
+
+  
 
 @NgModule({
   declarations: [
@@ -19,13 +24,17 @@ import { RouterModule } from '@angular/router';
     FormCustomComponent,
     CardCustomComponent,
     ArticleCustomComponent,
+    CardContainerComponent,
   ],
   imports: [
+    HasRoleDirective,
     CommonModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    SharedDirectivesModule,
   ],
   exports: [
+    HasRoleDirective,
     TableLightComponent,
     BtnComponent,
     TemplateFullWidthComponent,
@@ -33,6 +42,7 @@ import { RouterModule } from '@angular/router';
     FormCustomComponent,
     CardCustomComponent,
     ArticleCustomComponent,
+    CardContainerComponent, 
   ],
 })
 export class SharedModule {}

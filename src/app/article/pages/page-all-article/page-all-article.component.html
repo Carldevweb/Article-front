@@ -1,8 +1,76 @@
-<div class="row">
-  <div class="col-md-4 mb-3" *ngFor="let article of articles">
-    <app-card-custom [article]="article" [imageUrl]="article.imageUrl" [footer]="article.author"
-      [routerLink]="['/articles', article.id]">
+<!-- src/app/article/pages/page-all-article/page-all-article.component.html -->
+<div class="container py-4">
 
-    </app-card-custom>
+  <!-- ✅ GRID Bootstrap : 3 colonnes desktop / 2 tablette / 1 mobile -->
+  <div class="row g-4">
+
+    <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let article of articles">
+      <div class="w-100">
+
+        <!-- ✅ CARD -->
+        <div
+          class="cat-card d-flex flex-column position-relative"
+          [routerLink]="['/articles', article.id]"
+          role="button"
+        >
+          <!-- Like -->
+          <button
+            class="like-badge"
+            type="button"
+            (click)="$event.preventDefault(); $event.stopPropagation(); toggleLike(article.id)"
+          >
+            <span [class.liked]="isLiked(article.id)">♥</span>
+          </button>
+
+          <!-- Image -->
+          <div class="cat-card__image mb-3">
+            <img
+              [src]="getDisplayImage(article)"
+              alt="Image article"
+              (error)="onImgError($event)"
+            />
+          </div>
+
+          <!-- Titre -->
+          <h5 class="cat-card__title mb-2">
+            {{ article.title }}
+          </h5>
+
+          <!-- Texte -->
+          <p class="cat-card__text flex-grow-1">
+            {{ article.content }}
+          </p>
+
+          <!-- Footer -->
+          <div class="cat-card__footer mt-3">
+            {{ article.author }}
+          </div>
+        </div>
+
+        <!-- ✅ Actions -->
+        <div
+          class="article-actions d-flex gap-2 mt-3 justify-content-end"
+          *ngIf="canManageArticles()"
+        >
+          <a
+            class="btn cat-btn-outline"
+            [routerLink]="['/articles', article.id, 'edit']"
+            (click)="$event.preventDefault(); $event.stopPropagation()"
+          >
+            Modifier
+          </a>
+
+          <button
+            class="btn cat-btn-danger"
+            type="button"
+            (click)="$event.preventDefault(); $event.stopPropagation(); deleteArticle(article.id)"
+          >
+            Supprimer
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>

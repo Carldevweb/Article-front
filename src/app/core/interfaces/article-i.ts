@@ -13,5 +13,4 @@ export interface ArticleI {
   comment: CommentI[];
   like: LikeI[];
   media?: MediaI[];
-  categorie: CategoryI[];
 }

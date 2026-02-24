@@ -1,12 +1,19 @@
-nav {
-  width: 100%;
-  padding: 20px;
-  margin-top: 120px; /* Adjust based on header height */
+/* src/app/ui/ui/ui.component.scss */
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-footer {
-  margin-top: 90px;
-  text-align: center;
+
+/* Navbar collée en haut */
+.tr-nav-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1050;
 }
-header{
-  margin-top: 10px;
+
+/* Pousse le footer en bas */
+.app-content {
+  flex: 1;
 }

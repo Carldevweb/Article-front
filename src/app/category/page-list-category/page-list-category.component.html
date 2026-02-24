@@ -1,10 +1,60 @@
-<div class="row">
-  <div class="col-md-4 mb-3" *ngFor="let category of categories">
-    <app-card-custom
-      [routerLink]="['/articles']"
-      [queryParams]="{ categorie: category.nomCategorie }"
-      [title]="category.nomCategorie"
-      [content]="'Voir les articles de cette catégorie'"
-    ></app-card-custom>
+<div class="container py-4">
+  <div class="row g-4">
+
+    <div class="col-12 col-md-6 col-lg-4 d-flex" *ngFor="let category of categories">
+      <div class="w-100">
+
+        <!-- CARD CLIQUABLE -->
+        <div
+          class="cat-card d-flex flex-column position-relative"
+          [routerLink]="['/categories', category.id, 'articles']"
+          role="button"
+        >
+
+          <!-- IMAGE -->
+          <div class="cat-card__image mb-3">
+            <img
+              [src]="category.imageSrc || fallbackImage"
+              alt="Image catégorie"
+              (error)="onImgError($event)"
+            />
+          </div>
+
+          <!-- TITRE -->
+          <h5 class="cat-card__title mb-2">
+            {{ category.nomCategorie }}
+          </h5>
+
+          <!-- TEXTE -->
+          <p class="cat-card__text flex-grow-1">
+            Voir les articles de cette catégorie
+          </p>
+
+        </div>
+
+        <!-- ACTIONS (hors zone cliquable) -->
+        <div class="category-actions d-flex gap-2 mt-3 justify-content-end" *ngIf="canManageCategories()">
+
+          <a
+            class="btn cat-btn-outline"
+            [routerLink]="['/categories', category.id, 'edit']"
+            (click)="$event.preventDefault(); $event.stopPropagation()"
+          >
+            Modifier
+          </a>
+
+          <button
+            class="btn cat-btn-danger"
+            type="button"
+            (click)="$event.preventDefault(); $event.stopPropagation(); supprimerCategorie(category)"
+          >
+            Supprimer
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>

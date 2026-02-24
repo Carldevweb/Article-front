@@ -1,0 +1,19 @@
+/* On réplique le style Figma de CardCustom, mais uniquement ici (scopé au composant) */
+
+.figma-card {
+  border-radius: 10px; /* Figma */
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #d9d9d9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* pour éviter l'effet hover dans l'admin (optionnel) */
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.figma-card-body {
+  padding: 24px; /* spacing Figma */
+}

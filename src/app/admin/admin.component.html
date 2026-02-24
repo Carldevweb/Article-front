@@ -1,0 +1,115 @@
+<div class="page-wrap">
+  <h1 class="page-title">Administration</h1>
+
+  <!-- CARD : Créer une catégorie -->
+  <app-card-container>
+    <div class="section-header">
+      <h2 class="section-title">Créer une catégorie</h2>
+      <p class="ui-muted">Ajoute une nouvelle catégorie visible sur le site.</p>
+    </div>
+
+    <!-- ✅ Barre Figma (pas Bootstrap) -->
+    <div class="admin-create-row">
+      <div class="admin-create-field">
+        <label class="ui-label" for="newCategoryName">Nom de la catégorie</label>
+        <input
+          id="newCategoryName"
+          type="text"
+          class="ui-input"
+          placeholder="Nom catégorie"
+          [(ngModel)]="newCategoryName"
+        />
+      </div>
+
+      <button
+        class="ui-btn"
+        type="button"
+        (click)="createCategory()"
+        [disabled]="!newCategoryName || newCategoryName.trim().length < 2"
+      >
+        Créer
+      </button>
+    </div>
+
+    <div *ngIf="categoryMessage" class="ui-alert ui-alert-success">
+      {{ categoryMessage }}
+    </div>
+  </app-card-container>
+
+  <div class="mt-4"></div>
+
+  <!-- CARD : Utilisateurs -->
+  <app-card-container>
+    <div class="section-header">
+      <h2 class="section-title">Utilisateurs</h2>
+      <p class="ui-muted">Gère les rôles et supprime des comptes si nécessaire.</p>
+    </div>
+
+    <div *ngIf="loading" class="ui-muted">Chargement…</div>
+    <div *ngIf="error" class="ui-alert ui-alert-danger">{{ error }}</div>
+
+    <!-- Table (Bootstrap ok pour l'instant) -->
+    <div class="table-responsive" *ngIf="usersPage">
+      <table class="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of usersPage.content">
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.nomUtilisateur }}</td>
+            <td>{{ user.prenomUtilisateur }}</td>
+
+            <td>
+              <!-- si tu veux aussi virer Bootstrap ici, on remplace form-select par ui-select -->
+              <select
+                class="ui-select"
+                [value]="user.role"
+                (change)="changeRole(user, $any($event.target).value)"
+              >
+                <option *ngFor="let r of roles" [value]="r">
+                  {{ r }}
+                </option>
+              </select>
+            </td>
+
+            <td>
+              <button class="ui-btn-danger" type="button" (click)="deleteUser(user)">
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="usersPage" class="pagination-bar">
+      <button class="ui-btn-outline" type="button" (click)="prevPage()" [disabled]="page <= 0">
+        Précédent
+      </button>
+
+      <div class="pagination-info">
+        Page <strong>{{ usersPage.number + 1 }}</strong> / {{ usersPage.totalPages }}
+      </div>
+
+      <button
+        class="ui-btn-outline"
+        type="button"
+        (click)="nextPage()"
+        [disabled]="page >= (usersPage.totalPages - 1)"
+      >
+        Suivant
+      </button>
+    </div>
+  </app-card-container>
+</div>

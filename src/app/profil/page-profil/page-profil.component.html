@@ -1,0 +1,52 @@
+<div class="page-wrap">
+  <div class="page-header">
+    <h1 class="page-title">Profil</h1>
+
+    <div class="role-badge" *ngIf="user?.role as role">
+      {{ role }}
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="ui-card" *ngIf="loading">
+    <div class="ui-muted">Chargement du profil…</div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && errorMsg" class="ui-alert ui-alert-danger">
+    {{ errorMsg }}
+  </div>
+
+  <!-- Content -->
+  <div class="ui-card" *ngIf="!loading && user">
+    <div class="profile-header">
+      <div class="avatar" aria-hidden="true">
+        <span>{{ (user.nomUtilisateur || 'U').charAt(0) }}</span>
+      </div>
+
+      <div class="profile-meta">
+        <div class="profile-name">{{ user.nomUtilisateur }}</div>
+        <div class="profile-sub">{{ user.email }}</div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="info-grid">
+      <div class="info-row">
+        <div class="info-label">Email</div>
+        <div class="info-value">{{ user.email }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Nom d’utilisateur</div>
+        <div class="info-value">{{ user.nomUtilisateur }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Rôle</div>
+        <div class="info-value">{{ user.role }}</div>
+      </div>
+    </div>
+  </div>
+</div>

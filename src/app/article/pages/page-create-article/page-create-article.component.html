@@ -1,9 +1,91 @@
-<h1>Créer un article</h1>
+<div class="page-wrap">
+  <h1 class="page-title">Créer un article</h1>
 
-<p *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</p>
+  <ng-container *appHasRole="['EMPLOYEE','ADMIN']; else forbidden">
+    <div *ngIf="errorMsg" class="ui-alert ui-alert-danger">
+      {{ errorMsg }}
+    </div>
 
-<app-form-custom
-  [fields]="formFields"
-  (formSubmit)="onFormSubmit($event)"
-  (fieldRemove)="onFieldRemoved($event)"
-></app-form-custom>
+    <div class="ui-card">
+
+      <!-- Catégories -->
+      <div class="section">
+        <div class="section-title">Catégories</div>
+
+        <div *ngIf="categories.length === 0" class="ui-muted">
+          Aucune catégorie disponible.
+        </div>
+
+        <div class="category-grid" *ngIf="categories.length > 0">
+          <label class="category-chip" *ngFor="let cat of categories">
+            <input
+              type="checkbox"
+              class="category-checkbox"
+              (change)="toggleCategory(cat.id, $event)"
+            />
+            <span class="category-name">{{ cat.nomCategorie }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ✅ IMAGE (MAINTENANT AU BON ENDROIT) -->
+      <div class="section">
+        <div class="section-title">Image</div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <label class="ui-btn-outline mb-0" [class.is-disabled]="isSubmitting">
+            Choisir un fichier
+            <input
+              type="file"
+              accept="image/*"
+              class="d-none"
+              (change)="onFileSelected($event)"
+            />
+          </label>
+
+          <button
+            type="button"
+            class="ui-btn-outline"
+            (click)="removeSelectedFile()"
+            [disabled]="isSubmitting || !selectedFile"
+          >
+            Retirer
+          </button>
+        </div>
+
+        <div class="ui-muted" style="margin-top: 8px;">
+          {{ selectedFile ? selectedFile.name : 'Aucun fichier sélectionné.' }}
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="section">
+        <app-form-custom
+          [fields]="formFields"
+          (formSubmit)="onFormSubmit($event)"
+          (fieldRemove)="onFieldRemoved($event)"
+        >
+          <div form-footer class="actions">
+            <button type="submit" class="ui-btn" [disabled]="isSubmitting">
+              {{ isSubmitting ? 'Publication…' : 'Publier' }}
+            </button>
+          </div>
+        </app-form-custom>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <!-- ❌ FORBIDDEN -->
+  <ng-template #forbidden>
+    <div class="ui-card">
+      <div class="ui-alert ui-alert-warning">
+        Accès refusé : rôle insuffisant.
+      </div>
+
+      <a class="ui-btn-outline" routerLink="/articles">
+        Retour aux articles
+      </a>
+    </div>
+  </ng-template>
+</div>

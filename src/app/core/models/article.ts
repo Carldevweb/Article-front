@@ -1,5 +1,4 @@
 import { ArticleI } from '../interfaces/article-i';
-import { CategoryI } from '../interfaces/category-i';
 import { CommentI } from '../interfaces/comment-i';
 import { LikeI } from '../interfaces/like-i';
 import { MediaI } from '../interfaces/media-i';
@@ -14,8 +13,8 @@ export class Article implements ArticleI {
   comment!: CommentI[];
   like!: LikeI[];
   media?: MediaI[];
-  categorie!: CategoryI[];
 
+    categoriesIds: number[] = [];
 
   constructor(data?: Partial<Article>) {
     if (data) {
@@ -24,6 +23,7 @@ export class Article implements ArticleI {
   }
 
     get imageUrl(): string {
-    return this.media?.[0]?.url || 'https://via.placeholder.com/150';
-  }
+  return this.media?.[0]?.url || 'assets/placeholder.png';
+}
+
 }

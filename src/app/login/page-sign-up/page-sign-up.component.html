@@ -1,1 +1,96 @@
-<p>page-sign-up works!</p>
+<div class="page-wrap">
+  <h1 class="page-title">Créer un compte</h1>
+
+  <app-card-container>
+    <p class="ui-muted">Crée ton compte en quelques secondes.</p>
+
+    @if (messageSucces) {
+      <div class="ui-alert ui-alert-success">
+        {{ messageSucces }}
+      </div>
+    }
+
+    @if (messageErreur) {
+      <div class="ui-alert ui-alert-danger">
+        {{ messageErreur }}
+      </div>
+    }
+
+    <form class="ui-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="ui-field">
+        <label class="ui-label" for="nomUtilisateur">Nom d'utilisateur</label>
+        <input
+          id="nomUtilisateur"
+          type="text"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('nomUtilisateur')"
+          formControlName="nomUtilisateur"
+          placeholder="ex: carlito"
+          autocomplete="username"
+        />
+        @if (isInvalid('nomUtilisateur')) {
+          <div class="ui-error">Champ obligatoire.</div>
+        }
+      </div>
+
+      <div class="ui-field">
+        <label class="ui-label" for="prenomUtilisateur">Prénom</label>
+        <input
+          id="prenomUtilisateur"
+          type="text"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('prenomUtilisateur')"
+          formControlName="prenomUtilisateur"
+          placeholder="ex: Charles"
+          autocomplete="given-name"
+        />
+        @if (isInvalid('prenomUtilisateur')) {
+          <div class="ui-error">Champ obligatoire.</div>
+        }
+      </div>
+
+      <div class="ui-field">
+        <label class="ui-label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('email')"
+          formControlName="email"
+          placeholder="ex: nom@email.com"
+          autocomplete="email"
+        />
+        @if (isInvalid('email')) {
+          <div class="ui-error">Email invalide.</div>
+        }
+      </div>
+
+      <div class="ui-field">
+        <label class="ui-label" for="motDePasse">Mot de passe</label>
+        <input
+          id="motDePasse"
+          type="password"
+          class="ui-input"
+          [class.ui-input-invalid]="isInvalid('motDePasse')"
+          formControlName="motDePasse"
+          placeholder="6 caractères minimum"
+          autocomplete="new-password"
+        />
+        @if (isInvalid('motDePasse')) {
+          <div class="ui-error">6 caractères minimum.</div>
+        }
+      </div>
+
+      <!-- IMPORTANT: même classe que login -->
+      <div class="ui-actions">
+        <button class="ui-btn" type="submit" [disabled]="loading || form.invalid">
+          {{ loading ? 'Création…' : 'Créer le compte' }}
+        </button>
+
+        <a class="ui-btn-outline" routerLink="/login" [class.is-disabled]="loading">
+          J’ai déjà un compte
+        </a>
+      </div>
+    </form>
+  </app-card-container>
+</div>
